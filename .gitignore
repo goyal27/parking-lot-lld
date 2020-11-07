@@ -1,0 +1,16 @@
+/target
+/nbactions.xml
+/.idea
+/nb-configuration.xml
+/*.iml
+/ansible/*.jar
+/*.json
+/nbproject/
+
+
+.classpath
+.pmd
+.pmdruleset.xml
+.project
+.settings/
+/*.eml
