@@ -28,7 +28,7 @@ public class ParkingFloor {
     }
 
     public void addParkingSpot(final ParkingSpot parkingSpot) {
-        Optional<ParkingSpot> spot = parkingSpots.get(parkingSpot.getParkingSpotType())
+        final Optional<ParkingSpot> spot = parkingSpots.get(parkingSpot.getParkingSpotType())
                 .stream()
                 .filter(pS -> pS.getId().equals(parkingSpot.getId()))
                 .findAny();
@@ -38,21 +38,26 @@ public class ParkingFloor {
     }
 
     public synchronized ParkingSpot getParkingSpot(final Vehicle vehicle) throws InvalidParkingFloorException {
-        ParkingSpotType parkingSpotType = getParkingSpotTypeForVehicle(vehicle.getVehicleType());
+        final ParkingSpotType parkingSpotType = getParkingSpotTypeForVehicle(vehicle.getVehicleType());
         if (!canPark(parkingSpotType))
             throw new InvalidParkingFloorException("Cannot Find a spot");
-        ParkingSpot parkingSpot = parkingSpots.get(parkingSpotType).poll();
+        final ParkingSpot parkingSpot = parkingSpots.get(parkingSpotType).poll();
         parkingSpot.assignVehicle(vehicle);
         usedParkingSpots.put(parkingSpot.getId(), parkingSpot);
         return parkingSpot;
     }
 
-    public void vacateParkingSpot(final String parkingSpotId) {
-        ParkingSpot parkingSpot = usedParkingSpots.get(parkingSpotId);
+    public Optional<ParkingSpot> vacateParkingSpot(final String parkingSpotId) {
+        final ParkingSpot parkingSpot = usedParkingSpots.get(parkingSpotId);
         if (Objects.nonNull(parkingSpot)) {
             parkingSpot.vacateSpot();
             parkingSpots.get(parkingSpot.getParkingSpotType()).addFirst(parkingSpot);
         }
+        return Optional.ofNullable(parkingSpot);
+    }
+
+    public boolean canPark(final VehicleType vehicleType) {
+        return parkingSpots.get(getParkingSpotTypeForVehicle(vehicleType)).size() > 0;
     }
 
     private boolean canPark(final ParkingSpotType parkingSpotTypeForVehicle) {
