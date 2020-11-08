@@ -18,7 +18,7 @@
 * Time is recorded at the exit panel and charges are calculated at that point of time.  
 * User should be able to pay for the ticket.  
 * Admin should be able to add floor to the lot.  
-* Admin shoul be able to add parking slots to the floor.  
+* Admin should be able to add parking slots to the floor.  
 * Admin should be able to remove a slot.  
 * Admin should be able to add entrance and exit panels.  
 * User should not be issued a ticket if the slot is not available.  
